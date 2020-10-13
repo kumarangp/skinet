@@ -43,6 +43,9 @@ namespace API
 
             app.UseRouting();
 
+            // To use images in the folder
+            app.UseStaticFiles();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -37,20 +37,13 @@ namespace API.Controllers
 
         // https://localhost:5001/api/products
         [HttpGet]
-        public async Task<ActionResult<List<ProductToReturnDto>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
         {
             var spec = new ProductsWithTypesandBrandsSpecification();
 
             var products = await _productRepo.ListAsync(spec);
-            return products.Select(products => new ProductToReturnDto {
-                Id = products.Id,
-                Name = products.Name,
-                Description = products.Description,
-                PictureUrl = products.PictureUrl,
-                Price = products.Price,
-                ProductBrand = products.ProductBrand.Name,
-                ProductType = products.ProductType.Name
-            }).ToList();
+            return Ok(_mapper.Map<IReadOnlyList<Product>,
+                        IReadOnlyList<ProductToReturnDto>>(products));
         }
 
         // URL : https://localhost:5001/api/products/5
