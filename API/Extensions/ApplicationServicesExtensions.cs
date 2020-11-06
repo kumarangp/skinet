@@ -13,6 +13,7 @@ namespace API.Extensions
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+            services.AddScoped<IBasketRepository, BasketRespository>();
 
             //Error Handling- Validation error.
             services.Configure<ApiBehaviorOptions>(options =>
