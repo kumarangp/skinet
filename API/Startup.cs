@@ -3,6 +3,7 @@ using API.Helpers;
 using API.Middleware;
 using AutoMapper;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +25,14 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Application Databse
             services.AddDbContext<StoreContext>(x =>
                 x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            // Identity Database
+            services.AddDbContext<AppIdentityDbContext>(x =>
+                x.UseSqlServer(_configuration.GetConnectionString("IdentityConnection")));
 
             services.AddAutoMapper(typeof(MappingProfiles));
 
@@ -37,6 +43,7 @@ namespace API
             });
 
             services.AddApplicationServices();
+            services.AddIdentityServices(_configuration);
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {
@@ -68,6 +75,7 @@ namespace API
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwaggerDocumentation();
