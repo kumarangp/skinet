@@ -11,7 +11,6 @@ namespace Core.Entities
         public CustomerBasket(string id)
         {
             this.Id = id;
-
         }
 
         public string Id { get; set; }
